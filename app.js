@@ -1,6 +1,5 @@
-// 📦 POOL DE PREGUNTAS EXPANDIDO (6 por fase para máxima aleatoriedad)
 const bancoPreguntasPorNivel = {
-    0: [ // FASE 1: Troyano.bat
+    0: [
         {
             categoria: "F1 - PHISHING SMS",
             q: "Te llega un SMS diciendo que tu paquete de correo está retenido y debes pagar $1.50 en un link externo. ¿Cómo actúas?",
@@ -34,11 +33,11 @@ const bancoPreguntasPorNivel = {
         {
             categoria: "F1 - ACTUALIZACIONES",
             q: "¿Por qué es crítico instalar parches de seguridad de Windows o tu sistema móvil apenas salen?",
-            opts: ["Porque hacen que la batería dure el doble.", "Porque cierran vulnerabilidades de día cero que los atacantes ya conocen.", "Solo sirven para cambiar la interfaz estética del sistema."],
+            opts: ["Porque hacen que la batería dure el doble.", "Porque cierras vulnerabilidades de día cero que los atacantes ya conocen.", "Solo sirven para cambiar la interfaz estética del sistema."],
             correcta: 1
         }
     ],
-    1: [ // FASE 2: Rogue_AI_Botnet
+    1: [
         {
             categoria: "F2 - IA Y PRIVACIDAD",
             q: "Quieres usar una IA generativa en línea para resumir un informe confidencial. ¿Cuál es el principal riesgo?",
@@ -76,7 +75,7 @@ const bancoPreguntasPorNivel = {
             correcta: 0
         }
     ],
-    2: [ // FASE 3: Crypto_Ransom_Core
+    2: [
         {
             categoria: "F3 - RESPALDOS ISO 27001",
             q: "¿Cómo debes estructurar una política eficaz de copias de seguridad según buenas prácticas?",
@@ -103,7 +102,7 @@ const bancoPreguntasPorNivel = {
         },
         {
             categoria: "F3 - AUTENTICACIÓN AVANZADA",
-            q: "¿Cuál de los siguientes métodos de Segundo Factor de Autenticación (2FA) se considera el más inmune ante ataques de Phishing inverso?",
+            q: "📢 ¿Cuál de los siguientes métodos de Segundo Factor de Autenticación (2FA) se considera el más inmune ante ataques de Phishing inverso?",
             opts: ["Mensajes de texto (SMS).", "Tokens basados en hardware físico (FIDO2 / llaves USB Yubikey).", "Correos electrónicos de respaldo."],
             correcta: 1
         },
@@ -115,6 +114,13 @@ const bancoPreguntasPorNivel = {
         }
     ]
 };
+
+const anunciosIngenieriaSocial = [
+    "🔥 ¡FELICIDADES! Eres el visitante 1,000,000. Reclama tu iPhone 17 Pro Max GRATIS aquí. ¡Solo quedan 2 minutos! 📲",
+    "📍 Laura está a solo 4.8 km de ti y quiere ver tu perfil ahora mismo. Haz clic para chatear en vivo. 💬",
+    "⚠️ ¡ALERTA DE VIRUS! Tu navegador Chrome ha sido compromised por 14 troyanos. Haz clic para DESCARGAR Antivirus_Gratis.exe inmediato. 🛑",
+    "💸 ¡GANA $500 AL DÍA DESDE CASA! Sin experiencia. Cupos limitados para Panamá. Haz clic y empieza a facturar ya. 💰"
+];
 
 const jefes = [
     { name: "👾 Troyano.bat (Fase 1)", hp: 100, daño: 20 },
@@ -132,10 +138,10 @@ let poolPreguntasFase = [];
 let preguntaActual = null;
 let criticoActivo = false;
 
-// DOM
 const screenGame = document.getElementById("main-game-screen");
 const screenGameOver = document.getElementById("game-over-screen");
 const screenVictory = document.getElementById("victory-screen");
+const txtGameOverReason = document.getElementById("game-over-reason");
 
 const txtQuestion = document.getElementById("question");
 const txtCategory = document.getElementById("question-category");
@@ -155,7 +161,9 @@ const txtBossHp = document.getElementById("boss-hp-txt");
 const btnGlobalRestart = document.getElementById("btn-global-restart");
 const btnGlobalVictory = document.getElementById("btn-global-victory");
 
-// Audio API
+const popupBox = document.getElementById("malicious-popup");
+const popupBody = document.getElementById("popup-body");
+const btnClosePopup = document.getElementById("btn-close-popup");
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 function playSound(tipo) {
@@ -188,7 +196,6 @@ function playSound(tipo) {
 }
 
 function inicializarPreguntasDeFase() {
-    // Clona la lista completa de la fase correspondiente
     const originales = bancoPreguntasPorNivel[jefeActualIndex] || bancoPreguntasPorNivel[0];
     poolPreguntasFase = [...originales];
 }
@@ -209,16 +216,26 @@ function actualizarInterfaz() {
     else alertCrit.classList.add("hidden");
 }
 
+function lanzarPopupAleatorio() {
+    popupBox.classList.add("hidden");
+
+    if (Math.random() < 0.25) {
+        const randomAdIndex = Math.floor(Math.random() * anunciosIngenieriaSocial.length);
+        popupBody.innerHTML = `${anunciosIngenieriaSocial[randomAdIndex]} <em>👉 ¡Haz clic aquí para reclamar!</em>`;
+        
+        const randomTop = Math.floor(Math.random() * 30) + 20; 
+        popupBox.style.top = `${randomTop}%`;
+
+        popupBox.classList.remove("hidden");
+    }
+}
+
 function iniciarCombate() {
-    // CONTROL DE DERROTA
     if (playerHP <= 0) {
-        playSound("error");
-        screenGame.classList.add("hidden");
-        screenGameOver.classList.remove("hidden");
+        ejecutarGameOver("El malware superó tus políticas de seguridad perimetral. El núcleo del sistema fue comprometido.");
         return;
     }
 
-    // CONTROL DE VICTORIA DE FASE
     if (bossHP <= 0) {
         score += 50; 
         jefeActualIndex++;
@@ -227,8 +244,9 @@ function iniciarCombate() {
             txtLog.textContent = `💥 ¡Amenaza purgada! Escalando privilegios contra: ${jefes[jefeActualIndex].name}`;
             bossHP = jefes[jefeActualIndex].hp;
             maxBossHP = jefes[jefeActualIndex].hp;
-            inicializarPreguntasDeFase(); // Carga el pool limpio del siguiente jefe
+            inicializarPreguntasDeFase();
         } else {
+            popupBox.classList.add("hidden");
             screenGame.classList.add("hidden");
             screenVictory.classList.remove("hidden");
             actualizarInterfaz();
@@ -236,16 +254,13 @@ function iniciarCombate() {
         }
     }
 
-    // Si el pool se vacía y el boss sigue vivo, recarga todas las de esta fase
     if (poolPreguntasFase.length === 0) {
         inicializarPreguntasDeFase();
     }
 
-    // Selección aleatoria del pool actual de la fase
     const randomIndex = Math.floor(Math.random() * poolPreguntasFase.length);
     preguntaActual = poolPreguntasFase[randomIndex];
 
-    // Renderizar datos en los elementos estables del DOM
     txtCategory.textContent = `VÉCTOR: ${preguntaActual.categoria}`;
     txtQuestion.textContent = preguntaActual.q;
     divOptions.innerHTML = "";
@@ -254,7 +269,10 @@ function iniciarCombate() {
         const btn = document.createElement("button");
         btn.className = "opt-btn";
         btn.textContent = opcion;
-        btn.onclick = () => procesarTurno(i, randomIndex);
+        btn.onclick = () => {
+            popupBox.classList.add("hidden");
+            procesarTurno(i, randomIndex);
+        };
         divOptions.appendChild(btn);
     });
 
@@ -279,9 +297,7 @@ function procesarTurno(seleccion, indexEnPool) {
             ? `💥 ¡¡EXPLORE CRÍTICO!! Inyectaste código malicioso en ${jefes[jefeActualIndex].name} por -${dañoAlBoss} HP.`
             : `✨ ¡Contramedida limpia! Mitigación exitosa contra el ataque. (-${dañoAlBoss} HP)`;
         
-        // REGLA DE PROBABILIDAD: Si aciertas, se elimina de este pool activo para que salgan las otras
         poolPreguntasFase.splice(indexEnPool, 1);
-
     } else {
         playerHP -= dañoEnemigo;
         if (playerHP < 0) playerHP = 0;
@@ -289,18 +305,42 @@ function procesarTurno(seleccion, indexEnPool) {
         txtLog.textContent = criticoActivo
             ? `⚠️ ¡DESBORDAMIENTO CRÍTICO! Tu payload explotó en tus terminales locales. Pierdes -${dañoEnemigo} HP.`
             : `⚠️ ¡Alerta de Incidente! Fallaste el análisis de red. Recibes un impacto directo de -${dañoEnemigo} HP.`;
-        
-        // Si fallas, NO se elimina del pool, permitiendo que pueda salir después de forma aleatoria
     }
 
     criticoActivo = false;
     actualizarInterfaz();
     
     divOptions.innerHTML = "<p style='color: #94a3b8; font-style: italic; font-size:0.85rem;'>Consultando bases de firmas en el firewall...</p>";
-    setTimeout(iniciarCombate, 2200);
+    
+    setTimeout(() => {
+        lanzarPopupAleatorio();
+        iniciarCombate();
+    }, 2200);
 }
 
-// Compras
+function ejecutarGameOver(motivo) {
+    playSound("error");
+    popupBox.classList.add("hidden");
+    txtGameOverReason.innerHTML = motivo;
+    screenGame.classList.add("hidden");
+    screenGameOver.classList.remove("hidden");
+}
+
+btnClosePopup.addEventListener("click", (e) => {
+    e.stopPropagation();
+    popupBox.classList.add("hidden");
+    txtLog.textContent = "🛡️ Bloqueaste un Pop-up sospechoso de ingeniería social. ¡Bien jugado!";
+});
+
+popupBody.addEventListener("click", () => {
+    playerHP = 0;
+    actualizarInterfaz();
+    ejecutarGameOver(`
+        <span style="color:#ef4444; font-weight:bold;">❌ ¡ERROR CRÍTICO DE USUARIO!</span><br><br>
+        Le diste clic a un anuncio engañoso de fraude/malware.<br>
+        <strong>Lección de Ciberseguridad:</strong> Las ofertas milagrosas (como iPhones gratis, software pirata o personas buscando chatear cerca) son el vector número uno de virus y robos de credenciales en la red. ¡Jamás confíes en pop-ups externos de origen desconocido!
+    `);
+});
 btnVpn.addEventListener("click", () => {
     if (score >= 40 && playerHP < 100) {
         score -= 40;
@@ -322,7 +362,6 @@ btnCrit.addEventListener("click", () => {
     }
 });
 
-// Event Listeners de los botones globales de reinicios limpios sin tocar nodos
 btnGlobalRestart.addEventListener("click", reiniciarTodoElSistema);
 btnGlobalVictory.addEventListener("click", reiniciarTodoElSistema);
 
@@ -334,16 +373,42 @@ function reiniciarTodoElSistema() {
     maxBossHP = jefes[0].hp;
     criticoActivo = false;
 
-    // Control de pantallas por clases CSS
     screenGameOver.classList.add("hidden");
     screenVictory.classList.add("hidden");
     screenGame.classList.remove("hidden");
+    popupBox.classList.add("hidden");
 
     txtLog.textContent = "Reinicio de contingencia exitoso. Firewalls levantados.";
     inicializarPreguntasDeFase();
     iniciarCombate();
 }
 
-// Inicialización de la primera ejecución
+const feedbackForm = document.getElementById("feedback-form");
+const feedbackSuccess = document.getElementById("feedback-success");
+
+if (feedbackForm) {
+    feedbackForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+        
+        const data = new FormData(feedbackForm);
+        
+        fetch(feedbackForm.action, {
+            method: feedbackForm.method,
+            body: data,
+            headers: { 'Accept': 'application/json' }
+        }).then(response => {
+            if (response.ok) {
+                feedbackSuccess.classList.remove("hidden");
+                feedbackForm.reset();
+                setTimeout(() => feedbackSuccess.classList.add("hidden"), 5000);
+            } else {
+                alert("Hubo un problema al enviar las sugerencias. Inténtalo de nuevo.");
+            }
+        }).catch(error => {
+            alert("Error de conexión al enviar el formulario.");
+        });
+    });
+}
+
 inicializarPreguntasDeFase();
 iniciarCombate();

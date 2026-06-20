@@ -53,9 +53,18 @@
             </div>
         </div>
 
+        <div id="malicious-popup" class="popup-box hidden">
+            <div class="popup-header">
+                <span>⚠️ ALERTA DEL SISTEMA</span>
+                <button id="btn-close-popup" class="popup-close-btn">X</button>
+            </div>
+            <div id="popup-body" class="popup-body">
+            </div>
+        </div>
+
         <div id="game-over-screen" class="hidden text-center">
             <span class="danger-title">💀 DISPOSITIVO INFECTADO</span>
-            <p class="danger-desc">El malware superó tus políticas de seguridad perimetral. El núcleo del sistema fue comprometido.</p>
+            <p id="game-over-reason" class="danger-desc">El malware superó tus políticas de seguridad perimetral.</p>
             <button class="btn-restart" id="btn-global-restart">REINICIAR SISTEMA CENTRAL</button>
         </div>
 
@@ -63,6 +72,39 @@
             <span class="victory-title">🏆 INFRAESTRUCTURA INMUTABLE</span>
             <p class="victory-desc">Felicidades. Has mitigado todas las amenazas avanzadas y protegido los activos críticos de la red.</p>
             <button class="btn-restart btn-victory-restart" id="btn-global-victory">EJECUTAR NUEVA AUDITORÍA</button>
+        </div>
+
+        <div class="feedback-section">
+            <h3>📝 ¿Qué te pareció el juego?</h3>
+            <p>Deja tus sugerencias para mejorar el proyecto y califica la experiencia:</p>
+            
+            <form action="https://formspree.io/f/maqzrayj" method="POST" id="feedback-form">
+                
+                <div class="rating-container">
+                    <span>Calificación:</span>
+                    <div class="stars">
+                        <input type="radio" id="star5" name="estrellas" value="5" required>
+                        <label for="star5" title="5 estrellas">★</label>
+                        <input type="radio" id="star4" name="estrellas" value="4">
+                        <label for="star4" title="4 estrellas">★</label>
+                        <input type="radio" id="star3" name="estrellas" value="3">
+                        <label for="star3" title="3 estrellas">★</label>
+                        <input type="radio" id="star2" name="estrellas" value="2">
+                        <label for="star2" title="2 estrellas">★</label>
+                        <input type="radio" id="star1" name="estrellas" value="1">
+                        <label for="star1" title="1 estrella">★</label>
+                    </div>
+                </div>
+
+                <input type="text" name="nombre" placeholder="Tu nombre o alias (opcional)" class="feedback-input">
+
+                <textarea name="mensaje" placeholder="Escribe aquí tus sugerencias, bugs encontrados o ideas..." rows="3" class="feedback-textarea" required></textarea>
+
+                <button type="submit" class="btn-submit-feedback">Enviar Sugerencia</button>
+            </form>
+            <div id="feedback-success" class="status-alert hidden" style="background-color: rgba(0, 255, 204, 0.15); border-color: #00ffcc; color: #00ffcc; margin-top: 10px;">
+                ¡Gracias socio! Tus comentarios han sido enviados directamente a mi servidor.
+            </div>
         </div>
 
         <footer class="game-footer">

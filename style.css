@@ -9,6 +9,7 @@ body {
     margin: 0;
     padding: 10px;
     box-sizing: border-box;
+    position: relative;
 }
 
 .game-container {
@@ -20,6 +21,7 @@ body {
     max-width: 600px;
     box-shadow: 0 0 25px rgba(0, 255, 204, 0.15);
     box-sizing: border-box;
+    position: relative;
 }
 
 .game-header {
@@ -152,9 +154,62 @@ body {
 }
 .prompt { color: #ff3366; font-weight: bold; margin-right: 5px; }
 
-/* Estilos de las pantallas de estado final */
+.popup-box {
+    position: absolute;
+    top: 30%;
+    left: 10%;
+    right: 10%;
+    background-color: #fff;
+    color: #000;
+    border: 3px solid #ff3366;
+    border-radius: 4px;
+    box-shadow: 5px 5px 20px rgba(255, 51, 102, 0.4);
+    z-index: 100;
+    overflow: hidden;
+    animation: popEffect 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popEffect {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.popup-header {
+    background-color: #ff3366;
+    color: white;
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popup-close-btn {
+    background: #000;
+    color: #fff;
+    border: 1px solid #fff;
+    font-size: 0.75rem;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 1px 6px;
+    border-radius: 2px;
+}
+.popup-close-btn:hover { background: #fff; color: #000; }
+
+.popup-body {
+    padding: 15px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: center;
+    background: linear-gradient(135deg, #fffbeb, #fee2e2);
+    cursor: pointer;
+    color: #1e293b;
+}
+.popup-body em { display: block; font-size: 0.7rem; color: #ef4444; margin-top: 6px; font-style: normal; text-decoration: underline; }
+
 .danger-title { color: #ff3366; font-weight: bold; font-size: 1.3rem; display: block; margin-top: 15px; }
-.danger-desc { color: #cbd5e1; font-size: 0.9rem; margin: 10px 0 20px; }
+.danger-desc { color: #cbd5e1; font-size: 0.9rem; margin: 10px 0 20px; line-height: 1.4; }
 .victory-title { color: #00ffcc; font-weight: bold; font-size: 1.3rem; display: block; margin-top: 15px; }
 .victory-desc { color: #cbd5e1; font-size: 0.9rem; margin: 10px 0 20px; }
 
@@ -171,6 +226,91 @@ body {
     box-shadow: 0 0 10px rgba(255, 51, 102, 0.3);
 }
 .btn-victory-restart { background-color: #00ffcc; color: #060814; box-shadow: 0 0 10px rgba(0, 255, 204, 0.3); }
+
+.feedback-section {
+    background: #0f172a;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    border: 1px dashed #334155;
+}
+
+.feedback-section h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.05rem;
+    color: #00ffcc;
+}
+
+.feedback-section p {
+    margin: 0 0 15px 0;
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+.rating-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    color: #e2e8f0;
+}
+
+.stars {
+    display: inline-flex;
+    flex-direction: row-reverse;
+}
+
+.stars input { display: none; }
+
+.stars label {
+    font-size: 1.5rem;
+    color: #334155;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0 2px;
+}
+
+.stars input:checked ~ label,
+.stars label:hover,
+.stars label:hover ~ label {
+    color: #eab308;
+    text-shadow: 0 0 8px rgba(234, 179, 8, 0.5);
+}
+
+.feedback-input, .feedback-textarea {
+    width: 100%;
+    background-color: #020617;
+    border: 1px solid #1e293b;
+    color: #f8fafc;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 0.85rem;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    font-family: inherit;
+}
+
+.feedback-input:focus, .feedback-textarea:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+}
+
+.btn-submit-feedback {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s;
+}
+.btn-submit-feedback:hover { background-color: #2563eb; }
 
 .game-footer {
     border-top: 1px solid #1e293b;
@@ -192,4 +332,5 @@ body {
     .skills-grid { flex-direction: column; gap: 6px; }
     .skill-btn { width: 100%; padding: 12px; font-size: 0.85rem; }
     .opt-btn { padding: 14px; font-size: 0.85rem; }
+    .popup-box { left: 4%; right: 4%; top: 25%; }
 }
