@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber-Combat: Security Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div id="main-game-screen">
+            <header class="game-header">
+                <h2>⚔️ CYBER-COMBAT</h2>
+                <div class="score-board">Puntos: <span id="game-score">0</span></div>
+            </header>
+            
+            <div class="battlefield">
+                <div class="fighter player-side">
+                    <div class="name">🛡️ Mi_Sistema.exe</div>
+                    <div class="hp-bar"><div id="player-hp" class="hp-fill player-color" style="width: 100%;"></div></div>
+                    <div class="hp-text"><span id="player-hp-txt">100</span>/100 HP</div>
+                </div>
+                
+                <div class="versus">VS</div>
+                
+                <div class="fighter boss-side">
+                    <div class="name" id="boss-name">Cargando...</div>
+                    <div class="hp-bar"><div id="boss-hp" class="hp-fill boss-color" style="width: 100%;"></div></div>
+                    <div class="hp-text"><span id="boss-hp-txt">100</span>/100 HP</div>
+                </div>
+            </div>
+
+            <div id="modifier-status" class="status-alert hidden">⚡ MODO CRÍTICO ACTIVADO: Alto riesgo / Alto daño</div>
+
+            <div class="skills-section">
+                <span class="section-title">🛒 TIENDA DE CONTRAMEDIDAS:</span>
+                <div class="skills-grid">
+                    <button id="skill-vpn" class="skill-btn" disabled>🛡️ VPN (+30 HP) [40 pts]</button>
+                    <button id="skill-crit" class="skill-btn item-crit" disabled>⚡ Crítico (X2 Daño) [30 pts]</button>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <div class="quiz-header">
+                    <span id="question-category" class="tag">FASE: 1</span>
+                </div>
+                <p id="question">Cargando base de datos de amenazas...</p>
+                <div class="options-grid" id="options"></div>
+            </div>
+
+            <div class="terminal-log">
+                <span class="prompt">></span> <span id="log-text">Inicializando cortafuegos... Esperando acción.</span>
+            </div>
+        </div>
+
+        <div id="game-over-screen" class="hidden text-center">
+            <span class="danger-title">💀 DISPOSITIVO INFECTADO</span>
+            <p class="danger-desc">El malware superó tus políticas de seguridad perimetral. El núcleo del sistema fue comprometido.</p>
+            <button class="btn-restart" id="btn-global-restart">REINICIAR SISTEMA CENTRAL</button>
+        </div>
+
+        <div id="victory-screen" class="hidden text-center">
+            <span class="victory-title">🏆 INFRAESTRUCTURA INMUTABLE</span>
+            <p class="victory-desc">Felicidades. Has mitigado todas las amenazas avanzadas y protegido los activos críticos de la red.</p>
+            <button class="btn-restart btn-victory-restart" id="btn-global-victory">EJECUTAR NUEVA AUDITORÍA</button>
+        </div>
+
+        <footer class="game-footer">
+            <p>© 2026 Desarrollado por <strong>Manuel Alexander Quiel Albelo</strong></p>
+            <p>Universidad de Panamá • CRUSAM</p>
+            <p class="career-tag">Licenciatura en Ciberseguridad</p>
+        </footer>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

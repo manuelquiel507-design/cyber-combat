@@ -1,0 +1,195 @@
+body {
+    background-color: #060814;
+    color: #00ffcc;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.game-container {
+    background-color: #0c1020;
+    border: 2px solid #00ffcc;
+    padding: 20px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 0 25px rgba(0, 255, 204, 0.15);
+    box-sizing: border-box;
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #1e293b;
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+}
+
+.game-header h2 { 
+    margin: 0; 
+    font-size: 1.2rem; 
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(0, 255, 204, 0.5); 
+}
+
+.score-board { 
+    background: #111827; 
+    padding: 6px 12px; 
+    border-radius: 6px; 
+    border: 1px solid #334155;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.battlefield {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    background: #0f172a;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #1e293b;
+}
+
+.fighter { width: 42%; text-align: center; }
+.fighter .name { font-weight: bold; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.versus { font-size: 1.2rem; color: #ff3366; font-weight: bold; text-shadow: 0 0 8px #ff3366; }
+.hp-text { font-size: 0.8rem; margin-top: 4px; color: #94a3b8; font-weight: bold; }
+
+.hp-bar {
+    background-color: #1e293b;
+    height: 14px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 6px;
+    border: 1px solid #334155;
+}
+
+.hp-fill { height: 100%; transition: width 0.3s ease-in-out; }
+.player-color { background: linear-gradient(90deg, #00ffcc, #0099ff); }
+.boss-color { background: linear-gradient(90deg, #ff3366, #ff0000); }
+
+.status-alert {
+    background-color: rgba(234, 179, 8, 0.15);
+    border: 1px solid #eab308;
+    color: #eab308;
+    padding: 8px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.hidden { display: none !important; }
+.text-center { text-align: center; }
+
+.skills-section { margin-bottom: 15px; }
+.section-title { font-size: 0.75rem; color: #94a3b8; display: block; margin-bottom: 6px; font-weight: 600; }
+.skills-grid { display: flex; gap: 8px; }
+
+.skill-btn {
+    background-color: #111827;
+    color: #00ffcc;
+    border: 1px solid #00ffcc;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    width: 50%;
+    transition: background 0.2s;
+}
+.skill-btn:hover:not(:disabled) { background: rgba(0, 255, 204, 0.1); }
+.item-crit { color: #eab308; border-color: #eab308; }
+.item-crit:hover:not(:disabled) { background: rgba(234, 179, 8, 0.1); }
+.skill-btn:disabled { color: #475569; border-color: #334155; cursor: not-allowed; }
+
+.quiz-section {
+    background: #0f172a;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #1e293b;
+}
+
+.tag { background: #3b82f6; color: white; padding: 3px 8px; font-size: 0.7rem; border-radius: 4px; font-weight: bold; text-transform: uppercase; }
+#question { font-size: 0.95rem; color: #f8fafc; line-height: 1.4; margin-top: 10px; }
+
+.options-grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
+
+.opt-btn {
+    background-color: #1e293b;
+    color: #cbd5e1;
+    border: 1px solid #334155;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.9rem;
+    line-height: 1.3;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+}
+.opt-btn:hover { background-color: #111827; border-color: #00ffcc; color: #00ffcc; }
+
+.terminal-log {
+    background-color: #020617;
+    padding: 10px;
+    border-radius: 6px;
+    color: #e2e8f0;
+    font-size: 0.85rem;
+    border-left: 4px solid #ff3366;
+    margin-bottom: 15px;
+    min-height: 36px;
+}
+.prompt { color: #ff3366; font-weight: bold; margin-right: 5px; }
+
+/* Estilos de las pantallas de estado final */
+.danger-title { color: #ff3366; font-weight: bold; font-size: 1.3rem; display: block; margin-top: 15px; }
+.danger-desc { color: #cbd5e1; font-size: 0.9rem; margin: 10px 0 20px; }
+.victory-title { color: #00ffcc; font-weight: bold; font-size: 1.3rem; display: block; margin-top: 15px; }
+.victory-desc { color: #cbd5e1; font-size: 0.9rem; margin: 10px 0 20px; }
+
+.btn-restart {
+    background-color: #ff3366;
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.3);
+}
+.btn-victory-restart { background-color: #00ffcc; color: #060814; box-shadow: 0 0 10px rgba(0, 255, 204, 0.3); }
+
+.game-footer {
+    border-top: 1px solid #1e293b;
+    padding-top: 12px;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #64748b;
+    line-height: 1.4;
+}
+.game-footer p { margin: 2px 0; }
+.game-footer strong { color: #cbd5e1; }
+.career-tag { color: #3b82f6; font-weight: bold; margin-top: 3px !important; }
+
+@media (max-width: 480px) {
+    .game-container { padding: 12px; }
+    .battlefield { flex-direction: column; gap: 10px; padding: 10px; }
+    .fighter { width: 100%; }
+    .versus { font-size: 1rem; margin: 2px 0; }
+    .skills-grid { flex-direction: column; gap: 6px; }
+    .skill-btn { width: 100%; padding: 12px; font-size: 0.85rem; }
+    .opt-btn { padding: 14px; font-size: 0.85rem; }
+}
