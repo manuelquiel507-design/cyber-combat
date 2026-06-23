@@ -7,15 +7,45 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game-container">
-        <div id="main-game-screen">
+
+    <div class="game-container" id="game-viewport">
+        
+        <div class="top-controls">
+            <button id="btn-mute" class="control-btn">🔊 Sonido: ON</button>
+        </div>
+
+        <div class="instructions-accordion">
+            <button id="btn-toggle-instructions" class="accordion-trigger">
+                📖 INSTRUCCIONES DEL JUEGO <span id="accordion-arrow">▼</span>
+            </button>
+            <div id="instructions-content" class="accordion-content hidden">
+                <p><strong>Objetivo:</strong> Eres un especialista en Ciberseguridad defendiendo la infraestructura de tu sistema contra 3 fases de malware avanzado.</p>
+                <ul>
+                    <li><strong>¿Cómo jugar?:</strong> Responde correctamente las preguntas de seguridad para atacar al jefe. Si fallas, el malware infectará tu sistema restándote vida (HP).</li>
+                    <li><strong>⏱️ Alerta de Reloj:</strong> Tienes 25 segundos por pregunta. Si el tiempo se agota, el sistema sufrirá un retraso y el virus atacará automáticamente.</li>
+                    <li><strong>Modo Crítico (⚡):</strong> Duplica tu daño contra el jefe, ¡pero ten cuidado! Si fallas una pregunta en este modo, el daño que recibes también será masivo.</li>
+                    <li><strong>Tienda de Contramedidas:</strong> Usa tus puntos ganados para comprar una 🛡️ VPN (curar vida) o activar el ⚡ Daño Crítico.</li>
+                    <li><strong>⚠️ Alerta de Ingeniería Social:</strong> Durante la partida pueden aparecer ventanas emergentes falsas con premios o alertas. ¡No caigas en la trampa! Ciérralas en la equis (X) o quedarás automáticamente infectado.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="start-screen" class="text-center">
+            <span class="victory-title" style="margin-bottom: 10px;">🛡️ CORE TERMINAL READY</span>
+            <p class="victory-desc">El cortafuegos está a la espera de inicialización. Prepárate para mitigar las amenazas.</p>
+            <button class="btn-restart btn-victory-restart" id="btn-start-game" style="font-size: 1.1rem; letter-spacing: 1px;">INICIAR SISTEMA CENTRAL</button>
+        </div>
+
+        <div id="main-game-screen" class="hidden">
             <header class="game-header">
                 <h2>⚔️ CYBER-COMBAT</h2>
                 <div class="score-board">Puntos: <span id="game-score">0</span></div>
             </header>
             
-            <div class="battlefield">
-                <div class="fighter player-side">
+            <div class="battlefield" id="battlefield-zone">
+                
+                <div class="fighter player-side" id="player-card">
+                    <div class="character-avatar player-avatar">💻</div>
                     <div class="name">🛡️ Mi_Sistema.exe</div>
                     <div class="hp-bar"><div id="player-hp" class="hp-fill player-color" style="width: 100%;"></div></div>
                     <div class="hp-text"><span id="player-hp-txt">100</span>/100 HP</div>
@@ -23,7 +53,8 @@
                 
                 <div class="versus">VS</div>
                 
-                <div class="fighter boss-side">
+                <div class="fighter boss-side" id="boss-card">
+                    <div class="character-avatar boss-avatar" id="boss-avatar-icon">👾</div>
                     <div class="name" id="boss-name">Cargando...</div>
                     <div class="hp-bar"><div id="boss-hp" class="hp-fill boss-color" style="width: 100%;"></div></div>
                     <div class="hp-text"><span id="boss-hp-txt">100</span>/100 HP</div>
@@ -32,15 +63,23 @@
 
             <div id="modifier-status" class="status-alert hidden">⚡ MODO CRÍTICO ACTIVADO: Alto riesgo / Alto daño</div>
 
-            <div class="skills-section">
-                <span class="section-title">🛒 TIENDA DE CONTRAMEDIDAS:</span>
-                <div class="skills-grid">
-                    <button id="skill-vpn" class="skill-btn" disabled>🛡️ VPN (+30 HP) [40 pts]</button>
-                    <button id="skill-crit" class="skill-btn item-crit" disabled>⚡ Crítico (X2 Daño) [30 pts]</button>
+            <div class="instructions-accordion">
+                <button id="btn-toggle-shop" type="button" class="accordion-trigger">
+                    <span>🛒 TIENDA DE CONTRAMEDIDAS</span> <span id="shop-accordion-arrow">▼</span>
+                </button>
+                <div id="shop-content" class="accordion-content hidden">
+                    <div class="skills-grid">
+                        <button id="skill-vpn" class="skill-btn" disabled>🛡️ VPN (+30 HP) [40 pts]</button>
+                        <button id="skill-crit" class="skill-btn item-crit" disabled>⚡ Crítico (X2 Daño) [30 pts]</button>
+                    </div>
                 </div>
             </div>
 
             <div class="quiz-section">
+                <div class="timer-container" style="margin-bottom: 12px;">
+                    <div id="timer-bar" class="timer-fill"></div>
+                </div>
+
                 <div class="quiz-header">
                     <span id="question-category" class="tag">FASE: 1</span>
                 </div>
@@ -58,8 +97,7 @@
                 <span>⚠️ ALERTA DEL SISTEMA</span>
                 <button id="btn-close-popup" class="popup-close-btn">X</button>
             </div>
-            <div id="popup-body" class="popup-body">
-            </div>
+            <div id="popup-body" class="popup-body"></div>
         </div>
 
         <div id="game-over-screen" class="hidden text-center">
@@ -79,7 +117,6 @@
             <p>Deja tus sugerencias para mejorar el proyecto y califica la experiencia:</p>
             
             <form action="https://formspree.io/f/maqzrayj" method="POST" id="feedback-form">
-                
                 <div class="rating-container">
                     <span>Calificación:</span>
                     <div class="stars">
@@ -95,11 +132,8 @@
                         <label for="star1" title="1 estrella">★</label>
                     </div>
                 </div>
-
                 <input type="text" name="nombre" placeholder="Tu nombre o alias (opcional)" class="feedback-input">
-
                 <textarea name="mensaje" placeholder="Escribe aquí tus sugerencias, bugs encontrados o ideas..." rows="3" class="feedback-textarea" required></textarea>
-
                 <button type="submit" class="btn-submit-feedback">Enviar Sugerencia</button>
             </form>
             <div id="feedback-success" class="status-alert hidden" style="background-color: rgba(0, 255, 204, 0.15); border-color: #00ffcc; color: #00ffcc; margin-top: 10px;">
